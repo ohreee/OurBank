@@ -7,7 +7,6 @@ contract OurBank {
     struct User {
         bool enrolled;
         uint256 balance;
-        uint256 vault;
     }
 
     mapping(address => User) user;
@@ -28,7 +27,7 @@ contract OurBank {
     }
 
     function enroll(address _user) public onlyOwner {
-        user[_user] = User(true, 0, 0);
+        user[_user] = User(true, 0);
     }
 
     function deposit() public payable onlyEnrolled(msg.sender) {
