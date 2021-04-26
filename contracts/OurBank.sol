@@ -14,6 +14,7 @@ contract OurBank {
     constructor(bool _isPublic) {
         isPublic = _isPublic;
         owner = msg.sender;
+        enroll(msg.sender);
     }
 
     modifier onlyOwner() {
