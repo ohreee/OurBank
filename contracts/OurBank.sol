@@ -8,7 +8,7 @@ contract OurBank {
         bool enrolled;
         uint256 balance;
     }
-
+    event Enrolled(address _user);
     mapping(address => User) user;
 
     constructor(bool _isPublic) {
@@ -29,6 +29,7 @@ contract OurBank {
 
     function enroll(address _user) public onlyOwner {
         user[_user] = User(true, 0);
+        emit Enrolled(_user);
     }
 
     function isEnrolled(address _user) public view returns(bool) {
