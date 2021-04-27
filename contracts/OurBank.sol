@@ -18,7 +18,7 @@ contract OurBank {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner is allowed to do this");
+        require(msg.sender == owner, "Only owner");
         _;
     }
 
