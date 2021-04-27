@@ -1,7 +1,7 @@
 const { accounts, contract } = require('@openzeppelin/test-environment');
 const Web3 = require('web3');
 const { assert } = require('chai');
-const { expectRevert, balance } = require('@openzeppelin/test-helpers');
+const { expectRevert, expectEvent, balance } = require('@openzeppelin/test-helpers');
 const OurBank = contract.fromArtifact('OurBank'); // Loads a compiled contract
 const ether = 10 ** 18; // 1 ether = 1000000000000000000 wei
 const [owner, alice, bob] = accounts;
@@ -35,7 +35,8 @@ describe("OurBank", () => {
             bank.enroll(alice, {from: alice}),
             "Only owner"
         );
-        await bank.enroll(alice, {from: owner});
+        const receipt = await bank.enroll(alice, {from: owner});
+        expectEvent(receipt, "Enrolled", {_user: alice});
         assert.isTrue(await bank.isEnrolled(alice, { from: owner }));
     });
 
