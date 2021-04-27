@@ -6,13 +6,15 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --no-timeout --exit --recursive"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@openzeppelin/test-environment": "^0.1.9"
+    "@openzeppelin/test-environment": "^0.1.9",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2"
   }
 }
