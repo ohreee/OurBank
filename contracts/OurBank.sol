@@ -31,6 +31,10 @@ contract OurBank {
         user[_user] = User(true, 0);
     }
 
+    function isEnrolled(address _user) public view returns(bool) {
+        return user[_user].enrolled;
+    }
+
     function deposit() public payable onlyEnrolled(msg.sender) {
         user[msg.sender].balance += msg.value;
     }
