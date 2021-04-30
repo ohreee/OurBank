@@ -13,7 +13,7 @@ OurBank is a simple bank smartcontract written in solidity. Own your finance, ow
 
 ## Tech
 
-Dillinger uses a number of open source projects to work properly:
+OurBank uses a number of open source projects to work properly:
 
 - [truffle](https://www.trufflesuite.com/truffle) - The most popular development framework for Ethereum with a mission to make your life a whole lot easier !
 - [web3.js](https://web3js.readthedocs.io/en/v1.3.4/) - web3.js is a collection of libraries that allow you to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
