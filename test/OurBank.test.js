@@ -52,4 +52,15 @@ describe("OurBank", () => {
         const balanceAlice = await bank.getBalance({ from: alice });
         assert.equal(balanceAlice.toString(), 10 ** 18);
     });
+
+    it("should check withdraw", async () => {
+        bank = await OurBank.new(false, { from: owner });
+        await bank.enroll(alice, {from: owner});
+        await bank.deposit({from: alice, value: Web3.utils.toWei('1', 'ether')});
+        const balanceAlice = await bank.getBalance({ from: alice });
+        assert.equal(balanceAlice.toString(), Web3.utils.toWei('1', 'ether'));
+        await bank.withdraw(Web3.utils.toWei('0.5', 'ether'), {from: alice});
+        const newBalanceAlice = await bank.getBalance({ from: alice });
+        assert.equal(newBalanceAlice.toString(), Web3.utils.toWei('0.5', 'ether'));
+    });
 });
