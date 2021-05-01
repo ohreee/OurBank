@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 contract OurBank {
-    bool public isPublic;
     address private owner;
     struct User {
         bool enrolled;
@@ -11,8 +10,7 @@ contract OurBank {
     event Enrolled(address _user);
     mapping(address => User) user;
 
-    constructor(bool _isPublic) {
-        isPublic = _isPublic;
+    constructor() {
         owner = msg.sender;
         enroll(msg.sender);
     }
