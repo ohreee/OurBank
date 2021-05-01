@@ -3,12 +3,12 @@ pragma solidity ^0.8.0;
 
 contract OurBank {
     address private owner;
-    struct User {
+    struct Account {
         bool enrolled;
         uint256 balance;
     }
-    event Enrolled(address _user);
-    mapping(address => User) user;
+    event Enrolled(address _account);
+    mapping(address => Account) accounts;
 
     constructor() {
         owner = msg.sender;
@@ -20,34 +20,35 @@ contract OurBank {
         _;
     }
 
-    modifier onlyEnrolled(address _user) {
-        require(user[_user].enrolled == true, "Only enrolled");
+    modifier onlyEnrolled() {
+        require(accounts[msg.sender].enrolled == true, "Only enrolled");
         _;
     }
 
-    function enroll(address _user) public onlyOwner {
-        user[_user] = User(true, 0);
-        emit Enrolled(_user);
+    modifier sufficentAmount(uint256 _amount) {
+        require(_amount <= accounts[msg.sender].balance, "Insufficent balance");
+        _;
     }
 
-    function isEnrolled(address _user) public view returns(bool) {
-        return user[_user].enrolled;
+    function enroll(address _account) public onlyOwner {
+        accounts[_account] = Account(true, 0);
+        emit Enrolled(_account);
     }
 
-    function deposit() public payable onlyEnrolled(msg.sender) {
-        user[msg.sender].balance += msg.value;
+    function isEnrolled(address _account) public view returns(bool) {
+        return accounts[_account].enrolled;
     }
 
-    function withdraw(uint256 _amount) public onlyEnrolled(msg.sender) {
-        user[msg.sender].balance -= _amount;
+    function deposit() public payable onlyEnrolled {
+        accounts[msg.sender].balance += msg.value;
+    }
+
+    function withdraw(uint256 _amount) public payable onlyEnrolled sufficentAmount(msg.value) {
+        accounts[msg.sender].balance -= _amount;
         payable(msg.sender).transfer(_amount);
     }
 
-    function getBalance() public view onlyEnrolled(msg.sender) returns (uint256) {
-        return user[msg.sender].balance;
-    }
-
-    function getBalance(address _user) public view onlyOwner returns (uint256) {
-        return user[_user].balance;
+    function getBalance() public view onlyEnrolled returns (uint256) {
+        return accounts[msg.sender].balance;
     }
 }
