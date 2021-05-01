@@ -36,7 +36,7 @@ describe("OurBank", () => {
             "Only owner"
         );
         const receipt = await bank.enroll(alice, {from: owner});
-        expectEvent(receipt, "Enrolled", {_user: alice});
+        expectEvent(receipt, "Enrolled", {_account: alice});
         assert.isTrue(await bank.isEnrolled(alice, { from: owner }));
     });
 
@@ -62,5 +62,14 @@ describe("OurBank", () => {
         await bank.withdraw(Web3.utils.toWei('0.5', 'ether'), {from: alice});
         const newBalanceAlice = await bank.getBalance({ from: alice });
         assert.equal(newBalanceAlice.toString(), Web3.utils.toWei('0.5', 'ether'));
+    });
+
+    it("shouldn't be possible to withdraw more than current balance", async () => {
+        bank = await OurBank.new({ from: owner });
+        await bank.deposit({from: owner, value: Web3.utils.toWei('1', 'ether')});
+        expectRevert(
+            bank.withdraw(Web3.utils.toWei('1.5', 'ether'), {from: owner}),
+            "Insufficent balance"
+        );
     });
 });
