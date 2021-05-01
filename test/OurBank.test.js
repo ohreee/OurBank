@@ -8,21 +8,21 @@ const [owner, alice, bob] = accounts;
 
 describe("OurBank", () => {
     it("should check that the owner is enrolled", async () => {
-        bank = await OurBank.new(false, { from: owner });
+        bank = await OurBank.new({ from: owner });
         assert.isTrue(await bank.isEnrolled(owner, { from: owner }))
         const balanceOwner = await bank.getBalance({ from: owner })
         assert.equal(balanceOwner.toNumber(), 0)
     });
 
     it("should check that owner can deposit", async () => {
-        bank = await OurBank.new(false, { from: owner });
+        bank = await OurBank.new({ from: owner });
         await bank.deposit({ from: owner, value: Web3.utils.toWei('1', 'ether') });
         const balanceOwner = await bank.getBalance({ from: owner })
         assert.equal(balanceOwner.toString(), 10 ** 18)
     });
 
     it("should check that not enrolled can't deposit", async () => {
-        bank = await OurBank.new(false, { from: owner });
+        bank = await OurBank.new({ from: owner });
         await expectRevert(
             bank.deposit({ from: alice, value: Web3.utils.toWei('1', 'ether') }),
             "Only enrolled"
@@ -30,7 +30,7 @@ describe("OurBank", () => {
     });
 
     it("should check only owner can enroll alice", async () => {
-        bank = await OurBank.new(false, { from: owner });
+        bank = await OurBank.new({ from: owner });
         await expectRevert(
             bank.enroll(alice, {from: alice}),
             "Only owner"
@@ -41,7 +41,7 @@ describe("OurBank", () => {
     });
 
     it("should check only enrolled can deposit", async () => {
-        bank = await OurBank.new(false, { from: owner });
+        bank = await OurBank.new({ from: owner });
         await expectRevert(
             bank.deposit({from: alice, value: Web3.utils.toWei('1', 'ether')}),
             "Only enrolled"
@@ -54,7 +54,7 @@ describe("OurBank", () => {
     });
 
     it("should check withdraw", async () => {
-        bank = await OurBank.new(false, { from: owner });
+        bank = await OurBank.new({ from: owner });
         await bank.enroll(alice, {from: owner});
         await bank.deposit({from: alice, value: Web3.utils.toWei('1', 'ether')});
         const balanceAlice = await bank.getBalance({ from: alice });
