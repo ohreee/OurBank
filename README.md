@@ -50,6 +50,38 @@ npm test
 
 NB : make sure to compile before
 
+## Useful testing snippets
+* Test files headers
+```js
+const { accounts, contract } = require('@openzeppelin/test-environment');
+const Web3 = require('web3');
+const { assert } = require('chai');
+const { expectRevert, expectEvent, balance } = require('@openzeppelin/test-helpers');
+const OurBank = contract.fromArtifact('OurBank'); // Loads a compiled contract
+
+const ether = 10 ** 18; // 1 ether = 1000000000000000000 wei
+const [owner, alice, bob] = accounts;
+const OurBank = contract.fromArtifact('OurBank'); // Loads a compiled contract
+```
+
+* Empty test body
+```js
+describe("OurBank", () => {
+    it("should check something", async () => {
+    });
+});
+```
+
+* Deploy an instance of our contract
+```js
+//const OurBank = contract.fromArtifact('OurBank');
+describe("OurBank", () => {
+    it("should check something", async () => {
+        const bank = OurBank.new({from: owner});
+    });
+});
+```
+
 ## Deploy on Ganache-CLI
 1) run a ganache-cli instance :
 ```sh
@@ -59,6 +91,11 @@ ganache-cli -p 8545
 2) Migrate :
 ```sh
 truffle migrate --network development
+```
+
+3) Open the truffle console :
+```sh
+truffle console
 ```
 
 ## License
